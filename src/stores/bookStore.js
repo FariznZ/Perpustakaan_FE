@@ -41,6 +41,12 @@ export const useBookStore = defineStore('book', () => {
           }
         }
 
+        let pdfUrl = b.pdf_buku || '';
+        if (pdfUrl.includes('localhost:3000')) {
+          const namaFileSaja = pdfUrl.split('/').pop();
+          pdfUrl = `${API_URL}/uploads/pdfs/${namaFileSaja}`;
+        }
+
         const bookIdString = String(b.id);
         const bookReviews = localReviews.value[bookIdString] || []
         
@@ -54,13 +60,13 @@ export const useBookStore = defineStore('book', () => {
           author: b.penulis || 'Penulis Tidak Diketahui',
           cover: imageUrl,
           category: b.jenis_buku || 'Umum', 
-          pdf_buku: b.pdf_buku || null,
+          pdf_buku: pdfUrl || null,
           type: (b.pdf_buku && b.pdf_buku !== 'null' && b.pdf_buku !== '') ? 'digital' : 'physical', 
           harga: b.harga_buku ? Number(b.harga_buku) : 0, 
           stock: b.stok !== undefined ? Number(b.stok) : 0,
           stok: b.stok !== undefined ? Number(b.stok) : 0,
           description: b.deskripsi || 'Tidak ada deskripsi.',
-          pdfUrl: b.pdf_buku || '',
+          pdfUrl: pdfUrl,
           rating: averageRating,
           reviews: bookReviews
         }
