@@ -25,5 +25,6 @@ defineProps({
     <path v-if="name === 'plus'" d="M12 5v14M5 12h14"/>
     <path v-if="name === 'x'" d="M18 6L6 18M6 6l12 12"/>
     <path v-if="name === 'menu'" d="M3 12h18M3 6h18M3 18h18"/>
+    <path v-if="name === 'message-circle'" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
   </svg>
 </template>

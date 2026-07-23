@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import AppSidebar from './AppSidebar.vue'
+import ChatBox from './ChatBox.vue'
 import Icon from './Icon.vue'
 
 const sidebarOpen = ref(false)
@@ -38,6 +39,7 @@ const closeSidebar = () => sidebarOpen.value = false
         </router-view>
       </div>
     </main>
+    <ChatBox />
   </div>
 </template>
 
