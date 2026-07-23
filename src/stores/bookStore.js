@@ -31,7 +31,7 @@ export const useBookStore = defineStore('book', () => {
         let imageUrl = 'https://via.placeholder.com/300x400?text=No+Cover'
 
         if (rawCover) {
-          if (rawCover.includes('localhost:3000')) {
+          if (/localhost:\d+/.test(rawCover)) {
             const namaFileSaja = rawCover.split('/').pop();
             imageUrl = `${API_URL}/uploads/${namaFileSaja}`;
           } else if (rawCover.startsWith('http')) {
@@ -42,7 +42,7 @@ export const useBookStore = defineStore('book', () => {
         }
 
         let pdfUrl = b.pdf_buku || '';
-        if (pdfUrl.includes('localhost:3000')) {
+        if (/localhost:\d+/.test(pdfUrl)) {
           const namaFileSaja = pdfUrl.split('/').pop();
           pdfUrl = `${API_URL}/uploads/pdfs/${namaFileSaja}`;
         }
