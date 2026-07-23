@@ -4,10 +4,12 @@ import { useAuthStore } from '../stores/authStore'
 import { useRouter } from 'vue-router'
 import Icon from './Icon.vue'
 
+defineProps({ open: Boolean })
+defineEmits(['close'])
+
 const auth = useAuthStore()
 const router = useRouter()
 
-// Memudahkan pengecekan agar tidak salah tulis di template
 const isAdmin = computed(() =>
   auth.user?.role?.toLowerCase() === 'admin'
 )
@@ -19,51 +21,49 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <aside class="w-64 bg-slate-900 text-slate-300 min-h-screen flex flex-col fixed left-0 top-0 z-40">
+  <aside
+    class="w-64 bg-slate-900 text-slate-300 min-h-screen flex flex-col fixed left-0 top-0 z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0"
+    :class="{ 'translate-x-0': open }"
+  >
     <div class="p-6">
       <div class="flex items-center gap-2 text-white font-bold text-xl mb-8">
         <Icon name="library" class="text-teal-400" />
         <span>EduLibrary</span>
       </div>
-      
-      <!-- Menu Utama: Muncul untuk SEMUA (User & Admin) -->
+
       <div class="space-y-1 mb-8">
         <p class="text-xs uppercase font-bold text-slate-500 mb-2 px-3">Menu Utama</p>
-        <router-link to="/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400">
+        <router-link to="/dashboard" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400" @click="$emit('close')">
           <Icon name="monitor" size="18" /> Beranda
         </router-link>
-        <router-link to="/catalog" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400">
+        <router-link to="/catalog" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400" @click="$emit('close')">
           <Icon name="search" size="18" /> Katalog
         </router-link>
       </div>
 
-      <!-- Aktivitas Saya: Muncul untuk USER saja -->
       <div v-if="!isAdmin" class="space-y-1 mb-8">
         <p class="text-xs uppercase font-bold text-slate-500 mb-2 px-3">Aktivitas Saya</p>
-        <router-link to="/history" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400">
+        <router-link to="/history" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400" @click="$emit('close')">
           <Icon name="bookmark" size="18" /> Riwayat
         </router-link>
-        <router-link to="/upgrade" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-amber-500/20 text-amber-400">
+        <router-link to="/upgrade" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-amber-500/20 text-amber-400" @click="$emit('close')">
           <Icon name="crown" size="18" /> Membership
         </router-link>
       </div>
 
-      <!-- Panel Admin: Muncul hanya untuk ADMIN -->
       <div v-if="isAdmin" class="space-y-1 mb-8">
         <p class="text-xs uppercase font-bold text-slate-500 mb-2 px-3">Panel Admin</p>
-        <router-link to="/admin/books" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400">
+        <router-link to="/admin/books" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition" active-class="bg-teal-600/20 text-teal-400" @click="$emit('close')">
           <Icon name="book" size="18" /> Dashboard Admin
         </router-link>
       </div>
     </div>
-    
+
     <div class="mt-auto p-4 border-t border-slate-800">
       <div class="bg-slate-800 rounded-lg p-3 mb-3" v-if="auth.user">
         <div class="text-sm text-white font-medium truncate">{{ auth.user.username || auth.user.name }}</div>
         <div class="flex items-center justify-between mt-1">
           <span class="text-xs text-slate-400 uppercase">{{ auth.user.role }}</span>
-          
-          <!-- Perbaikan logika Badge -->
           <span v-if="isAdmin" class="text-[10px] bg-indigo-600 text-white px-1.5 py-0.5 rounded font-bold uppercase flex items-center gap-1 shadow-[0_0_8px_rgba(79,70,229,0.6)] border border-indigo-400/50">
             <Icon name="crown" size="10"/> GOD
           </span>

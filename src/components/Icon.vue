@@ -24,5 +24,6 @@ defineProps({
     <path v-if="name === 'filter'" d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
     <path v-if="name === 'plus'" d="M12 5v14M5 12h14"/>
     <path v-if="name === 'x'" d="M18 6L6 18M6 6l12 12"/>
+    <path v-if="name === 'menu'" d="M3 12h18M3 6h18M3 18h18"/>
   </svg>
 </template>
