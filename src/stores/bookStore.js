@@ -30,10 +30,12 @@ export const useBookStore = defineStore('book', () => {
         const rawCover = b.foto_buku || b.cover;
         let imageUrl = 'https://via.placeholder.com/300x400?text=No+Cover'
 
+        const namaHost = (url) => { try { return new URL(url).hostname } catch { return '' } };
+
         if (rawCover) {
-          if (/localhost:\d+/.test(rawCover)) {
-            const namaFileSaja = rawCover.split('/').pop();
-            imageUrl = `${API_URL}/uploads/${namaFileSaja}`;
+          const host = namaHost(rawCover);
+          if (host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.') || host.startsWith('10.')) {
+            imageUrl = `${API_URL}/uploads/${rawCover.split('/').pop()}`;
           } else if (rawCover.startsWith('http')) {
             imageUrl = rawCover;
           } else {
@@ -42,9 +44,9 @@ export const useBookStore = defineStore('book', () => {
         }
 
         let pdfUrl = b.pdf_buku || '';
-        if (/localhost:\d+/.test(pdfUrl)) {
-          const namaFileSaja = pdfUrl.split('/').pop();
-          pdfUrl = `${API_URL}/uploads/pdfs/${namaFileSaja}`;
+        const pdfHost = namaHost(pdfUrl);
+        if (pdfHost === 'localhost' || pdfHost === '127.0.0.1' || pdfHost.startsWith('192.168.') || pdfHost.startsWith('10.')) {
+          pdfUrl = `${API_URL}/uploads/pdfs/${pdfUrl.split('/').pop()}`;
         }
 
         const bookIdString = String(b.id);
