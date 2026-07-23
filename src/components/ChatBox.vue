@@ -27,9 +27,12 @@ const send = async () => {
       body: JSON.stringify({ message: msg })
     })
     const data = await res.json()
+    if (!res.ok) {
+      throw new Error(data.message || `Error ${res.status}`)
+    }
     messages.value.push({ role: 'ai', text: data.message || 'Maaf, terjadi kesalahan.' })
-  } catch {
-    messages.value.push({ role: 'ai', text: 'Gagal terhubung ke server.' })
+  } catch (e) {
+    messages.value.push({ role: 'ai', text: e.message.includes('429') ? 'Terlalu banyak request. Tunggu beberapa saat ya.' : e.message })
   } finally {
     loading.value = false
   }
