@@ -221,7 +221,7 @@ const showAddModal = ref(false)
 const isEditMode = ref(false)
 const editingBookId = ref(null)
 
-const newBook = reactive({ title: '', author: '', type: 'physical', category: '', stock: 1, harga: 0, description: '', cover: '' })
+const newBook = reactive({ title: '', author: '', type: 'physical', category: '', stock: 1, description: '', cover: '' })
 const isProcessing = ref(false)
 const selectedFile = ref(null)
 const selectedPdfFile = ref(null) 
@@ -254,7 +254,6 @@ const openEditModal = (book) => {
     type: book.type, 
     category: book.category,
     stock: book.stock || 0, 
-    harga: book.harga || 0,
     description: book.description || '', 
     cover: book.rawCover || book.cover || ''
   })
@@ -274,7 +273,6 @@ const saveBook = async () => {
     category: newBook.category,
     type: newBook.type,
     stock: newBook.type === 'digital' ? 0 : newBook.stock, 
-    harga: newBook.harga,
     description: newBook.description,
     cover: newBook.cover,
     file: selectedFile.value, 
@@ -567,7 +565,7 @@ const processOfflineLoan = async () => {
             <tr class="bg-slate-50 text-slate-600 border-b border-slate-200">
               <th class="p-3 font-medium rounded-tl-lg">Judul</th>
               <th class="p-3 font-medium">Kategori</th>
-              <th class="p-3 font-medium text-right">Harga</th>
+              
               <th class="p-3 font-medium text-right">Stok</th>
               <th class="p-3 font-medium text-center rounded-tr-lg">Aksi</th>
             </tr>
@@ -576,7 +574,7 @@ const processOfflineLoan = async () => {
             <tr v-for="book in filteredBooks" :key="book.id" class="hover:bg-slate-50 transition">
               <td class="p-3 font-medium text-slate-800">{{ book.title }}</td>
               <td class="p-3 text-slate-600">{{ book.category }}</td>
-              <td class="p-3 text-right text-slate-600">Rp {{ book.harga?.toLocaleString('id-ID') || '0' }}</td>
+              
               <td class="p-3 text-right font-medium" :class="book.stock === 0 ? 'text-red-500' : 'text-slate-700'">
                 {{ book.type === 'physical' ? book.stock : '∞' }}
               </td>
@@ -685,10 +683,7 @@ const processOfflineLoan = async () => {
               <label class="block text-sm font-medium text-slate-700 mb-1">Stok</label>
               <input v-model.number="newBook.stock" type="number" min="0" :disabled="newBook.type === 'digital'" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 text-sm disabled:bg-slate-100 disabled:text-slate-400">
             </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1">Harga (Rp)</label>
-              <input v-model.number="newBook.harga" type="number" min="0" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/40 text-sm">
-            </div>
+            
           </div>
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-1">Deskripsi</label>
