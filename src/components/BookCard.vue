@@ -10,18 +10,7 @@ const props = defineProps({
 const router = useRouter()
 const bookStore = useBookStore()
 
-// 💵 Fungsi helper untuk mengubah nominal angka menjadi format Rupiah (Rp xx.xxx)
-const formatRupiah = (angka) => {
-  // Antisipasi jika data harga bertipe string, null, atau undefined dari API
-  const nominal = angka ? parseInt(angka, 10) : 0;
-  if (nominal === 0) return 'Gratis / TBD';
-  
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0
-  }).format(nominal);
-}
+
 </script>
 
 <template>
@@ -70,10 +59,7 @@ const formatRupiah = (angka) => {
         </p>
       </div>
 
-      <!-- Format rupiah sudah aman karena fungsi helper Anda mendukung book.harga_buku -->
-      <p class="text-sm font-bold text-emerald-600 mb-3 mt-1">
-        {{ formatRupiah(book.harga || book.harga_buku) }}
-      </p>
+      
 
       <div
         class="mt-auto pt-3 border-t border-slate-100 flex justify-between items-center text-sm"
