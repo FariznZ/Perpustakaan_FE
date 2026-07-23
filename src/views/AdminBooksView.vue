@@ -239,7 +239,7 @@ const openAddModal = () => {
   editingBookId.value = null
   selectedFile.value = null
   selectedPdfFile.value = null 
-  Object.assign(newBook, { title: '', author: 'Admin', type: 'physical', category: 'Novel', stock: 1, harga: 0, description: '', cover: '' })
+  Object.assign(newBook, { title: '', author: 'Admin', type: 'physical', category: 'Novel', stock: 1, description: '', cover: '' })
   showAddModal.value = true
 }
 
