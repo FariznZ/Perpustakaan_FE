@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useBookStore } from './bookStore'
 
-import { API_URL } from './config';
+import { API_URL } from '../config';
 
 // Ambil token auth dengan aman
 const getHeaders = () => {

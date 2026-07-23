@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 // URL Sesuai IP Backend Anda (Pusat Konfigurasi IP)
-import { API_URL } from './config';
+import { API_URL } from '../config';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(JSON.parse(localStorage.getItem('currentUser')) || null)
