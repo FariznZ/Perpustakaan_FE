@@ -22,7 +22,7 @@ const handleLogout = async () => {
 
 <template>
   <aside
-    class="w-64 bg-slate-900 text-slate-300 min-h-screen flex flex-col fixed left-0 top-0 z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0"
+    class="w-64 bg-slate-900 text-slate-300 min-h-screen flex flex-col fixed left-0 top-0 z-40 transition-transform duration-300 -translate-x-full lg:translate-x-0 overflow-y-auto"
     :class="{ 'translate-x-0': open }"
   >
     <div class="p-6">
