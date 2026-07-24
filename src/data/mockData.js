@@ -8,6 +8,6 @@ export const mockUsers = [
 ];
 
 export const mockBooks = [
-  { id: 1, title: 'Clean Code: A Handbook', author: 'Robert C. Martin', type: 'digital', category: 'Pemrograman', description: 'Buku panduan utama untuk menulis kode yang bersih, mudah dibaca, dan mudah dipelihara.', cover: '[https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=300&q=80](https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=300&q=80)', pdfUrl: DEFAULT_PDF, rating: 4.8, reviews: [{user: 'Siti Aminah', rating: 5, text: 'Sangat direkomendasikan!'}] },
-  { id: 2, title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', type: 'physical', category: 'Ilmu Komputer', description: 'Buku komprehensif tentang algoritma.', cover: '[https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=300&q=80](https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=300&q=80)', stock: 5, rating: 4.9, reviews: [] }
+  { id: 1, title: 'Clean Code: A Handbook', author: 'Robert C. Martin', type: 'digital', category: 'Pemrograman', description: 'Buku panduan utama untuk menulis kode yang bersih, mudah dibaca, dan mudah dipelihara.', cover: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=300&q=80', pdfUrl: DEFAULT_PDF, rating: 4.8, reviews: [{user: 'Siti Aminah', rating: 5, text: 'Sangat direkomendasikan!'}] },
+  { id: 2, title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', type: 'physical', category: 'Ilmu Komputer', description: 'Buku komprehensif tentang algoritma.', cover: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=300&q=80', stock: 5, rating: 4.9, reviews: [] }
 ];

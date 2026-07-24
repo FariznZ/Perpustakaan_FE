@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
       
       const result = await response.json()
-      const token = result.token || result.data?.token 
+      const token = result.token || result.data?.token
       
       if (!token) {
         throw new Error('Token tidak ditemukan dalam respons server')
@@ -45,7 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
       } else if (rawRole === 'premium') {
         userRole = 'user'
         userMembership = 'premium'
-      } else if (rawRole === 'user' && username === 'berbayar') { 
+      } else if (rawRole === 'user' && username === 'berbayar') {
         userRole = 'user'
         userMembership = 'premium'
       } else if (rawRole === 'gratis' || rawRole === 'user') {
@@ -53,20 +53,21 @@ export const useAuthStore = defineStore('auth', () => {
         userMembership = 'free'
       }
 
+      const apiUser = result.user || {}
       const userData = {
         id: tokenPayload.id || Date.now(),
-        name: tokenPayload.username || username, 
+        name: apiUser.name || tokenPayload.username || username,
         username: tokenPayload.username || username,
-        role: userRole, 
+        role: userRole,
         membership: userMembership,
-        email: tokenPayload.email || '',
-        phone: tokenPayload.phone || '' 
+        email: apiUser.email || '',
+        phone: apiUser.no_telp || ''
       }
 
       user.value = userData
       localStorage.setItem('currentUser', JSON.stringify(userData))
       localStorage.setItem('api_token', token)
-      
+
       return { success: true }
     } catch (error) {
       console.error("[Login Gagal]:", error.message)

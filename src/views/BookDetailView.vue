@@ -113,8 +113,7 @@ const submitReview = () => {
       book.value.id, 
       auth.user?.name || auth.user?.username || 'gratis',
       reviewRating.value, 
-      reviewText.value,
-      new Date().toISOString()
+      reviewText.value
     )
     
     if (success) {
