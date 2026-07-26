@@ -62,28 +62,35 @@ const doLogin = async () => {
           <!-- 3D Book Render -->
           <div class="relative mb-8 flex items-center justify-center" style="height: 290px">
             <div class="scene">
-              <div class="book-body">
-                <div class="face face-front">
-                  <div class="book-title">EDUBOOK</div>
-                  <div class="book-line"></div>
-                  <div class="book-subtitle">Digital Library</div>
+              <div class="book-wrapper">
+                <div class="book-body">
+                  <div class="face face-back"></div>
+                  <div class="face face-spine">
+                    <div class="spine-text">EDUBOOK</div>
+                  </div>
+                  <div class="face face-side">
+                    <div class="page-line" style="top: 18%"></div>
+                    <div class="page-line" style="top: 34%"></div>
+                    <div class="page-line" style="top: 50%"></div>
+                    <div class="page-line" style="top: 66%"></div>
+                    <div class="page-line" style="top: 82%"></div>
+                  </div>
+                  <div class="face face-top">
+                    <div class="page-line" style="top: 28%"></div>
+                    <div class="page-line" style="top: 56%"></div>
+                  </div>
+                  <div class="face face-bottom"></div>
+                  <div class="face face-inner">
+                    <div class="inner-text">EduLibrary</div>
+                  </div>
                 </div>
-                <div class="face face-back"></div>
-                <div class="face face-spine">
-                  <div class="spine-text">EDUBOOK</div>
+                <div class="book-front-cover">
+                  <div class="front-cover-face">
+                    <div class="book-title">EDUBOOK</div>
+                    <div class="book-line"></div>
+                    <div class="book-subtitle">Digital Library</div>
+                  </div>
                 </div>
-                <div class="face face-side">
-                  <div class="page-line" style="top: 18%"></div>
-                  <div class="page-line" style="top: 34%"></div>
-                  <div class="page-line" style="top: 50%"></div>
-                  <div class="page-line" style="top: 66%"></div>
-                  <div class="page-line" style="top: 82%"></div>
-                </div>
-                <div class="face face-top">
-                  <div class="page-line" style="top: 28%"></div>
-                  <div class="page-line" style="top: 56%"></div>
-                </div>
-                <div class="face face-bottom"></div>
               </div>
               <div class="book-shadow"></div>
               <div class="book-glow"></div>
@@ -268,10 +275,10 @@ const doLogin = async () => {
   height: 300px;
   position: relative;
 }
-.book-body {
+.book-wrapper {
+  position: absolute;
   width: 180px;
   height: 260px;
-  position: absolute;
   transform-style: preserve-3d;
   transform: rotateX(-14deg) rotateY(-22deg);
   left: 50%;
@@ -279,14 +286,19 @@ const doLogin = async () => {
   margin-left: -90px;
   margin-top: -130px;
 }
+.book-body {
+  position: absolute;
+  width: 180px;
+  height: 260px;
+  transform-style: preserve-3d;
+}
 .face {
   position: absolute;
   backface-visibility: hidden;
 }
-.face-front {
+.front-cover-face {
   width: 180px;
   height: 260px;
-  transform: translateZ(15px);
   background: linear-gradient(175deg, #1e3260, #162952 40%, #122347);
   border-radius: 3px;
   display: flex;
@@ -296,6 +308,23 @@ const doLogin = async () => {
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.06),
     inset 0 -1px 0 rgba(0,0,0,0.3);
+}
+.face-inner {
+  width: 180px;
+  height: 260px;
+  transform: translateZ(15px);
+  background: linear-gradient(175deg, #f0ece4, #e8e4da);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inner-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: rgba(0,0,0,0.12);
+  text-transform: uppercase;
 }
 .face-back {
   width: 180px;
@@ -392,5 +421,20 @@ const doLogin = async () => {
   height: 250px;
   background: radial-gradient(ellipse at center, rgba(59,130,246,0.12) 0%, transparent 60%);
   pointer-events: none;
+}
+
+.book-front-cover {
+  position: absolute;
+  width: 180px;
+  height: 260px;
+  transform-style: preserve-3d;
+  transform: translateZ(15px);
+  transform-origin: 0 50%;
+  animation: cover-open 12s cubic-bezier(0.12, 0.75, 0.25, 1) forwards;
+}
+
+@keyframes cover-open {
+  0% { transform: translateZ(15px) rotateY(0deg); }
+  100% { transform: translateZ(15px) rotateY(-80deg); }
 }
 </style>
