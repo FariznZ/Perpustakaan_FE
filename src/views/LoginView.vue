@@ -264,22 +264,29 @@ const doLogin = async () => {
 }
 .particle { animation: particle-glow 3s ease-in-out infinite; }
 
-.perspective-container { perspective: 800px; }
-
-@keyframes book-open-right {
-  0%, 100% { transform: rotateY(0deg); }
-  50% { transform: rotateY(22deg); }
+.perspective-container {
+  perspective: 800px;
 }
+.perspective-container svg {
+  transform-style: preserve-3d;
+}
+
 @keyframes book-open-left {
-  0%, 100% { transform: rotateY(0deg); }
-  50% { transform: rotateY(-22deg); }
+  0% { transform: rotateY(65deg); }
+  100% { transform: rotateY(0deg); }
+}
+@keyframes book-open-right {
+  0% { transform: rotateY(-65deg); }
+  100% { transform: rotateY(0deg); }
 }
 .book-left {
   transform-origin: 80px 60px;
-  animation: book-open-left 10s ease-in-out infinite;
+  transform: rotateY(65deg);
+  animation: book-open-left 10s cubic-bezier(0.12, 0.75, 0.25, 1) forwards;
 }
 .book-right {
   transform-origin: 80px 60px;
-  animation: book-open-right 10s ease-in-out infinite;
+  transform: rotateY(-65deg);
+  animation: book-open-right 10s cubic-bezier(0.12, 0.75, 0.25, 1) forwards;
 }
 </style>
