@@ -3,10 +3,10 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { useBookStore } from '../stores/bookStore'
 import { useLoanStore } from '../stores/loanStore'
 import { useAuthStore } from '../stores/authStore'
-import { mockUsers, DEFAULT_PDF } from '../data/mockData'
+import { mockUsers } from '../data/mockData'
 import Icon from '../components/Icon.vue'
 import Swal from 'sweetalert2'
-import { uploadToCloudinary } from '../utils/cloudinary'
+import { API_URL } from '../config'
 
 const bookStore = useBookStore()
 const loanStore = useLoanStore()
@@ -268,53 +268,51 @@ const saveBook = async () => {
   
   isProcessing.value = true
 
-  Swal.fire({ title: 'Upload ke Cloudinary...', text: 'Mohon tunggu, file sedang diupload', icon: 'info', allowOutsideClick: false, showConfirmButton: false, willOpen: () => Swal.showLoading() })
+  Swal.fire({ title: 'Menyimpan...', text: 'Mohon tunggu', icon: 'info', allowOutsideClick: false, showConfirmButton: false, willOpen: () => Swal.showLoading() })
 
-  let fotoUrl = newBook.cover || ''
-  let pdfUrl = DEFAULT_PDF
+  const formData = new FormData()
+  formData.append('nama_buku', newBook.title)
+  formData.append('jenis_buku', newBook.category)
+  formData.append('penulis', newBook.author || 'Admin')
+  formData.append('deskripsi', newBook.description || '')
+  formData.append('stok', newBook.type === 'digital' ? '0' : String(newBook.stock))
+  formData.append('harga_buku', '0')
+
+  if (selectedFile.value) {
+    formData.append('foto_buku', selectedFile.value)
+  }
+  if (selectedPdfFile.value) {
+    formData.append('pdf_buku', selectedPdfFile.value)
+  }
+
+  const token = localStorage.getItem('api_token')
+  const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
 
   try {
-    if (selectedFile.value) {
-      fotoUrl = await uploadToCloudinary(selectedFile.value, 'image')
+    const url = isEditMode.value
+      ? `${API_URL}/buku/${editingBookId.value}`
+      : `${API_URL}/buku`
+
+    const res = await fetch(url, {
+      method: isEditMode.value ? 'PUT' : 'POST',
+      headers,
+      body: formData
+    })
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.message || `Gagal ${isEditMode.value ? 'update' : 'tambah'} buku`)
     }
-    if (selectedPdfFile.value) {
-      pdfUrl = await uploadToCloudinary(selectedPdfFile.value, 'raw')
-    }
+
+    Swal.close()
+    await bookStore.fetchBooks()
+    Swal.fire({ title: 'Berhasil!', text: `Data buku berhasil ${isEditMode.value ? 'diperbarui' : 'ditambahkan'}!`, icon: 'success', confirmButtonColor: '#0d9488', timer: 2000, timerProgressBar: true })
+    showAddModal.value = false
   } catch (e) {
     Swal.close()
-    isProcessing.value = false
-    return Swal.fire({ title: 'Gagal Upload!', text: e.message, icon: 'error', confirmButtonColor: '#ef4444' })
+    Swal.fire({ title: 'Gagal!', text: e.message, icon: 'error', confirmButtonColor: '#ef4444' })
   }
-  
-  Swal.close()
-  
-  const payload = { 
-    title: newBook.title,
-    author: newBook.author,
-    category: newBook.category,
-    type: newBook.type,
-    stock: newBook.type === 'digital' ? 0 : newBook.stock, 
-    description: newBook.description,
-    cover: fotoUrl,
-    foto_buku_url: fotoUrl,
-    pdf_buku_url: newBook.type === 'digital' ? pdfUrl : '',
-    rating: 0, 
-    reviews: [] 
-  }
-  
-  if (isEditMode.value) {
-    const success = await bookStore.editBook(editingBookId.value, payload)
-    if(success) {
-      Swal.fire({ title: 'Berhasil!', text: 'Data buku berhasil diperbarui!', icon: 'success', confirmButtonColor: '#0d9488', timer: 2000, timerProgressBar: true })
-      showAddModal.value = false
-    }
-  } else {
-    const success = await bookStore.createBook(payload)
-    if(success) {
-      Swal.fire({ title: 'Sukses Tambah!', text: 'Buku berhasil ditambahkan!', icon: 'success', confirmButtonColor: '#0d9488', timer: 2000, timerProgressBar: true })
-      showAddModal.value = false
-    }
-  }
+
   isProcessing.value = false
 }
 
