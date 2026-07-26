@@ -430,7 +430,8 @@ const doLogin = async () => {
   transform-style: preserve-3d;
   transform: translateZ(15px);
   transform-origin: 0 50%;
-  animation: cover-open 12s cubic-bezier(0.12, 0.75, 0.25, 1) forwards;
+  will-change: transform;
+  animation: cover-open 8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 @keyframes cover-open {
