@@ -276,10 +276,10 @@ const doLogin = async () => {
 }
 .book-left {
   transform-origin: 80px 60px;
-  animation: book-open-left 5s ease-in-out infinite;
+  animation: book-open-left 10s ease-in-out infinite;
 }
 .book-right {
   transform-origin: 80px 60px;
-  animation: book-open-right 5s ease-in-out infinite;
+  animation: book-open-right 10s ease-in-out infinite;
 }
 </style>
