@@ -59,38 +59,35 @@ const doLogin = async () => {
       <!-- Center hero visual (hidden on mobile) -->
       <div class="relative z-10 hidden lg:block">
         <div class="flex flex-col items-center text-center">
-          <!-- Large decorative book (auto-opening animation) -->
-          <div class="relative mb-8 perspective-container">
-            <svg class="w-32 h-28 text-white/90 drop-shadow-[0_8px_24px_rgba(0,0,0,0.3)]" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Glow behind book -->
-              <circle cx="80" cy="60" r="50" fill="white" opacity="0.06"/>
-              <circle cx="80" cy="60" r="35" fill="white" opacity="0.04"/>
-              <!-- Left half -->
-              <g class="book-left">
-                <path d="M80 24 C60 18 35 16 16 22 L16 96 C35 88 60 86 80 94 Z" fill="white" opacity="0.5"/>
-                <path d="M80 32 C62 28 40 26 24 31 L24 88 C40 82 62 80 80 86 Z" fill="white" opacity="0.25"/>
-                <line x1="30" y1="44" x2="60" y2="44" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.15"/>
-                <line x1="32" y1="54" x2="58" y2="54" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.12"/>
-                <line x1="34" y1="64" x2="56" y2="64" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.1"/>
-              </g>
-              <!-- Right half -->
-              <g class="book-right">
-                <path d="M80 24 C100 18 125 16 144 22 L144 96 C125 88 100 86 80 94 Z" fill="white" opacity="0.5"/>
-                <path d="M80 32 C98 28 120 26 136 31 L136 88 C120 82 98 80 80 86 Z" fill="white" opacity="0.25"/>
-                <line x1="100" y1="44" x2="130" y2="44" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.15"/>
-                <line x1="102" y1="54" x2="128" y2="54" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.12"/>
-                <line x1="104" y1="64" x2="126" y2="64" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.1"/>
-              </g>
-              <!-- Spine -->
-              <rect x="78" y="18" width="4" height="78" rx="2" fill="white" opacity="0.7"/>
-              <!-- Decorative dots -->
-              <circle cx="30" cy="42" r="2.5" fill="white" opacity="0.3" class="animate-pulse-slow"/>
-              <circle cx="130" cy="50" r="2" fill="white" opacity="0.25" class="animate-pulse-slow" style="animation-delay: 1s"/>
-              <circle cx="36" cy="70" r="1.5" fill="white" opacity="0.35" class="animate-pulse-slow" style="animation-delay: 2s"/>
-              <circle cx="128" cy="72" r="1.5" fill="white" opacity="0.3" class="animate-pulse-slow" style="animation-delay: 1.5s"/>
-              <circle cx="80" cy="14" r="2" fill="white" opacity="0.2"/>
-              <circle cx="80" cy="110" r="1.5" fill="white" opacity="0.2"/>
-            </svg>
+          <!-- 3D Book Render -->
+          <div class="relative mb-8 flex items-center justify-center" style="height: 290px">
+            <div class="scene">
+              <div class="book-body">
+                <div class="face face-front">
+                  <div class="book-title">EDUBOOK</div>
+                  <div class="book-line"></div>
+                  <div class="book-subtitle">Digital Library</div>
+                </div>
+                <div class="face face-back"></div>
+                <div class="face face-spine">
+                  <div class="spine-text">EDUBOOK</div>
+                </div>
+                <div class="face face-side">
+                  <div class="page-line" style="top: 18%"></div>
+                  <div class="page-line" style="top: 34%"></div>
+                  <div class="page-line" style="top: 50%"></div>
+                  <div class="page-line" style="top: 66%"></div>
+                  <div class="page-line" style="top: 82%"></div>
+                </div>
+                <div class="face face-top">
+                  <div class="page-line" style="top: 28%"></div>
+                  <div class="page-line" style="top: 56%"></div>
+                </div>
+                <div class="face face-bottom"></div>
+              </div>
+              <div class="book-shadow"></div>
+              <div class="book-glow"></div>
+            </div>
           </div>
 
           <h2 class="text-white font-bold text-2xl tracking-tight mb-3">Perpustakaan Digital</h2>
@@ -264,29 +261,136 @@ const doLogin = async () => {
 }
 .particle { animation: particle-glow 3s ease-in-out infinite; }
 
-.perspective-container {
-  perspective: 800px;
+/* 3D Book Render */
+.scene {
+  perspective: 1000px;
+  width: 200px;
+  height: 300px;
+  position: relative;
 }
-.perspective-container svg {
+.book-body {
+  width: 180px;
+  height: 260px;
+  position: absolute;
   transform-style: preserve-3d;
+  transform: rotateX(-14deg) rotateY(-22deg);
+  left: 50%;
+  top: 50%;
+  margin-left: -90px;
+  margin-top: -130px;
 }
-
-@keyframes book-open-left {
-  0% { transform: rotateY(65deg); }
-  100% { transform: rotateY(0deg); }
+.face {
+  position: absolute;
+  backface-visibility: hidden;
 }
-@keyframes book-open-right {
-  0% { transform: rotateY(-65deg); }
-  100% { transform: rotateY(0deg); }
+.face-front {
+  width: 180px;
+  height: 260px;
+  transform: translateZ(15px);
+  background: linear-gradient(175deg, #1e3260, #162952 40%, #122347);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.3);
 }
-.book-left {
-  transform-origin: 80px 60px;
-  transform: rotateY(65deg);
-  animation: book-open-left 10s cubic-bezier(0.12, 0.75, 0.25, 1) forwards;
+.face-back {
+  width: 180px;
+  height: 260px;
+  transform: rotateY(180deg) translateZ(15px);
+  background: linear-gradient(180deg, #162952, #122347);
 }
-.book-right {
-  transform-origin: 80px 60px;
-  transform: rotateY(-65deg);
-  animation: book-open-right 10s cubic-bezier(0.12, 0.75, 0.25, 1) forwards;
+.face-spine {
+  width: 30px;
+  height: 260px;
+  transform: rotateY(-90deg) translateZ(90px);
+  background: linear-gradient(180deg, #0d1d3a, #0a1830);
+  border-radius: 2px 0 0 2px;
+}
+.face-side {
+  width: 30px;
+  height: 260px;
+  transform: rotateY(90deg) translateZ(90px);
+  background: linear-gradient(90deg, #e0dcd2, #e8e4da 60%, #f0ece4);
+}
+.face-top {
+  width: 180px;
+  height: 30px;
+  transform: rotateX(-90deg) translateZ(130px);
+  background: linear-gradient(180deg, #f5f0e8, #ece8e0);
+}
+.face-bottom {
+  width: 180px;
+  height: 30px;
+  transform: rotateX(90deg) translateZ(130px);
+  background: #c4c0b8;
+}
+.book-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 7px;
+  background: linear-gradient(180deg, #f5e6b8, #d4a843 40%, #b8902a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+.book-line {
+  width: 60px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,67,0.5), transparent);
+  margin: 12px 0;
+}
+.book-subtitle {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+.spine-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.5);
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  margin-left: -5px;
+}
+.page-line {
+  position: absolute;
+  left: 8%;
+  width: 84%;
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+}
+.book-shadow {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) rotateX(80deg);
+  width: 200px;
+  height: 50px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, transparent 70%);
+  filter: blur(15px);
+  pointer-events: none;
+}
+.book-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(ellipse at center, rgba(59,130,246,0.12) 0%, transparent 60%);
+  pointer-events: none;
 }
 </style>
