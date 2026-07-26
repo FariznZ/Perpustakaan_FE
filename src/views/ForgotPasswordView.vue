@@ -62,7 +62,7 @@ const handleResetPassword = async () => {
 
         <form v-else @submit.prevent="handleResetPassword" class="space-y-5">
           <div v-if="successMessage" class="text-emerald-600 text-sm font-medium bg-emerald-50 p-3 rounded-xl border border-emerald-200">{{ successMessage }}</div>
-          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Password Baru</label><input v-model="newPassword" type="password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 outline-none transition bg-white/50" placeholder="Min. 8 karakter" required></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Password Baru</label><input v-model="newPassword" type="password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 outline-none transition bg-white/50" placeholder="Min. 4 karakter" required></div>
           <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Konfirmasi</label><input v-model="confirmPassword" type="password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 outline-none transition bg-white/50" placeholder="Ulangi password" required></div>
           <div v-if="error" class="text-red-600 text-sm font-medium text-center bg-red-50 p-3 rounded-xl border border-red-100">{{ error }}</div>
           <button type="submit" :disabled="isLoading" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition shadow-lg shadow-indigo-200 disabled:opacity-60 flex justify-center items-center gap-2">

@@ -51,7 +51,7 @@ const usernameError = computed(() => {
 
 const passwordError = computed(() => {
   if (!password.value) return 'Password wajib diisi.'
-  if (password.value.length < 8) return 'Password minimal 8 karakter.'
+  if (password.value.length < 4) return 'Password minimal 4 karakter.'
   return ''
 })
 
@@ -143,7 +143,7 @@ const doRegister = async () => {
               <input v-model="password" type="password" @blur="markTouched('password')"
                 class="w-full px-4 py-2.5 rounded-xl border outline-none transition text-sm bg-white/50"
                 :class="touched.password && passwordError ? 'border-red-400 focus:ring-2 focus:ring-red-400/30' : 'border-slate-300 focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500'"
-                placeholder="Min. 8 karakter" required>
+                placeholder="Min. 4 karakter" required>
               <p v-if="touched.password && passwordError" class="text-red-500 text-xs mt-1">{{ passwordError }}</p>
             </div>
             <div>
