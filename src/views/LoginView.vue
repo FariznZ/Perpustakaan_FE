@@ -11,6 +11,20 @@ const error = ref('')
 const isLoading = ref(false)
 const showPassword = ref(false)
 
+const panelRef = ref(null)
+const mx = ref(0)
+const my = ref(0)
+
+const onPointerMove = (e) => {
+  const rect = panelRef.value?.getBoundingClientRect()
+  if (!rect) return
+  const cx = e.clientX ?? e.touches?.[0]?.clientX ?? 0
+  const cy = e.clientY ?? e.touches?.[0]?.clientY ?? 0
+  mx.value = ((cx - rect.left) / rect.width - 0.5) * 2
+  my.value = ((cy - rect.top) / rect.height - 0.5) * 2
+}
+const onPointerLeave = () => { mx.value = 0; my.value = 0 }
+
 const doLogin = async () => {
   isLoading.value = true
   error.value = ''
@@ -27,11 +41,11 @@ const doLogin = async () => {
 <template>
   <div class="min-h-screen lg:flex bg-slate-50">
     <!-- LEFT: Brand Panel -->
-    <div class="relative lg:w-[480px] flex-shrink-0 bg-gradient-to-br from-indigo-950 via-indigo-900 to-violet-950 p-10 lg:p-14 flex flex-col justify-between overflow-hidden min-h-[320px] lg:min-h-screen">
-      <!-- Decorative floating blobs -->
-      <div class="absolute -top-32 -right-32 w-[28rem] h-[28rem] bg-indigo-400/10 rounded-full blur-3xl animate-float-slow"></div>
-      <div class="absolute -bottom-24 -left-24 w-[22rem] h-[22rem] bg-violet-400/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s"></div>
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-sky-400/5 rounded-full blur-3xl animate-float-slow" style="animation-delay: 4s"></div>
+    <div ref="panelRef" @pointermove="onPointerMove" @pointerleave="onPointerLeave" @touchmove.prevent="onPointerMove" class="relative lg:w-[480px] flex-shrink-0 bg-gradient-to-br from-indigo-950 via-indigo-900 to-violet-950 p-10 lg:p-14 flex flex-col justify-between overflow-hidden min-h-[320px] lg:min-h-screen">
+      <!-- Decorative floating blobs (3D parallax layers) -->
+      <div class="panel-layer absolute -top-32 -right-32 w-[28rem] h-[28rem] bg-indigo-400/10 rounded-full blur-3xl" :style="{ transform: `translate(${mx * -6}px, ${my * -6}px)` }"></div>
+      <div class="panel-layer absolute -bottom-24 -left-24 w-[22rem] h-[22rem] bg-violet-400/10 rounded-full blur-3xl" :style="{ transform: `translate(${mx * -12}px, ${my * -12}px)` }"></div>
+      <div class="panel-layer absolute top-1/2 left-1/2 w-80 h-80 bg-sky-400/5 rounded-full blur-3xl" :style="{ transform: `translate(calc(-50% + ${mx * -8}px), calc(-50% + ${my * -8}px))` }"></div>
 
       <!-- Subtle dot pattern overlay -->
       <svg class="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
@@ -59,9 +73,9 @@ const doLogin = async () => {
       <!-- Center hero visual (hidden on mobile) -->
       <div class="relative z-10 hidden lg:block">
         <div class="flex flex-col items-center text-center">
-          <!-- Large decorative book -->
-          <div class="relative mb-8">
-            <svg class="w-32 h-28 text-white/90" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Large decorative book (3D tilt) -->
+          <div class="panel-layer relative mb-8 cursor-pointer" :style="{ transform: `perspective(800px) rotateX(${my * 18}deg) rotateY(${mx * 18}deg)` }">
+            <svg class="w-32 h-28 text-white/90 drop-shadow-[0_8px_24px_rgba(0,0,0,0.3)]" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg">
               <!-- Glow behind book -->
               <circle cx="80" cy="60" r="50" fill="white" opacity="0.06"/>
               <circle cx="80" cy="60" r="35" fill="white" opacity="0.04"/>
@@ -98,6 +112,22 @@ const doLogin = async () => {
             Akses ribuan buku digital kapan saja, di mana saja. Temukan pengetahuan tanpa batas.
           </p>
         </div>
+      </div>
+
+      <!-- Foreground 3D particles -->
+      <div class="panel-layer absolute inset-0 z-20 pointer-events-none" :style="{ transform: `translate(${mx * -28}px, ${my * -28}px)` }">
+        <svg class="w-full h-full" viewBox="0 0 480 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="100" r="2.5" fill="white" opacity="0.35" class="particle"/>
+          <circle cx="410" cy="150" r="2" fill="white" opacity="0.25" class="particle" style="animation-delay: 0.3s"/>
+          <circle cx="360" cy="440" r="3" fill="white" opacity="0.2" class="particle" style="animation-delay: 0.8s"/>
+          <circle cx="50" cy="470" r="2" fill="white" opacity="0.3" class="particle" style="animation-delay: 0.5s"/>
+          <circle cx="200" cy="260" r="1.5" fill="white" opacity="0.35" class="particle" style="animation-delay: 1.1s"/>
+          <circle cx="130" cy="370" r="2.5" fill="white" opacity="0.2" class="particle" style="animation-delay: 0.6s"/>
+          <circle cx="390" cy="300" r="1.5" fill="white" opacity="0.3" class="particle" style="animation-delay: 0.9s"/>
+          <circle cx="260" cy="90" r="2" fill="white" opacity="0.25" class="particle" style="animation-delay: 0.2s"/>
+          <circle cx="440" cy="520" r="1.5" fill="white" opacity="0.2" class="particle" style="animation-delay: 1.3s"/>
+          <circle cx="30" cy="280" r="2" fill="white" opacity="0.25" class="particle" style="animation-delay: 0.7s"/>
+        </svg>
       </div>
 
       <!-- Bottom quote/stat -->
@@ -225,19 +255,17 @@ const doLogin = async () => {
 </template>
 
 <style scoped>
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(0.5deg); }
-}
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
+.panel-layer { transition: transform 0.2s cubic-bezier(0.15, 0.75, 0.4, 1); }
+
 @keyframes pulse-slow {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.6; }
 }
-.animate-float { animation: float 8s ease-in-out infinite; }
-.animate-float-slow { animation: float-slow 12s ease-in-out infinite; }
 .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
+
+@keyframes particle-glow {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+.particle { animation: particle-glow 3s ease-in-out infinite; }
 </style>
