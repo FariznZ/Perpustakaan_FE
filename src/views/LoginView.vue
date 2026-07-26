@@ -302,8 +302,8 @@ const doLogin = async () => {
 .front-cover-face {
   width: 180px;
   height: 260px;
-  background: linear-gradient(170deg, #5b8def, #3b82f6 30%, #2563eb 70%, #1d4ed8);
-  border-radius: 14px;
+  background: linear-gradient(165deg, #7ec8ff, #5b9cf7 25%, #3b82f6 55%, #5b9cf7 85%, #7ec8ff);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -445,31 +445,32 @@ const doLogin = async () => {
   transform: translateZ(15px);
   transform-origin: 0 50%;
   will-change: transform;
-  animation: cover-open 6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: cover-open 5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
 .book-page {
   position: absolute;
-  width: 72px;
-  height: 238px;
-  top: 11px;
-  background: linear-gradient(180deg, #ffffff, #f8f6f2);
+  width: 75px;
+  height: 240px;
+  top: 10px;
+  background: linear-gradient(180deg, #ffffff, #f5f3ef);
   border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  box-shadow: 0 0 4px rgba(0,0,0,0.04);
   transform-style: preserve-3d;
   will-change: transform;
+  opacity: 0;
 }
 .page-left {
-  left: 8px;
+  left: -75px;
   transform-origin: right center;
-  transform: translateZ(15.5px) rotateY(0deg);
-  animation: page-v-left 6s 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transform: translateZ(15.8px) rotateY(0deg);
+  animation: page-v-left 4s 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 .page-right {
-  right: 8px;
+  left: 0;
   transform-origin: left center;
-  transform: translateZ(15.5px) rotateY(0deg);
-  animation: page-v-right 6s 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transform: translateZ(15.8px) rotateY(0deg);
+  animation: page-v-right 4s 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
 @keyframes cover-open {
@@ -477,11 +478,13 @@ const doLogin = async () => {
   100% { transform: translateZ(15px) rotateY(-75deg); }
 }
 @keyframes page-v-left {
-  0% { transform: translateZ(15.5px) rotateY(0deg); }
-  100% { transform: translateZ(15.5px) rotateY(-18deg); }
+  0% { transform: translateZ(15.8px) rotateY(0deg); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateZ(15.8px) rotateY(-22deg); opacity: 1; }
 }
 @keyframes page-v-right {
-  0% { transform: translateZ(15.5px) rotateY(0deg); }
-  100% { transform: translateZ(15.5px) rotateY(18deg); }
+  0% { transform: translateZ(15.8px) rotateY(0deg); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateZ(15.8px) rotateY(22deg); opacity: 1; }
 }
 </style>
