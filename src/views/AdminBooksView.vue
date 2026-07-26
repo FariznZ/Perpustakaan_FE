@@ -6,6 +6,7 @@ import { useAuthStore } from '../stores/authStore'
 import { mockUsers, DEFAULT_PDF } from '../data/mockData'
 import Icon from '../components/Icon.vue'
 import Swal from 'sweetalert2'
+import { uploadToCloudinary } from '../utils/cloudinary'
 
 const bookStore = useBookStore()
 const loanStore = useLoanStore()
@@ -266,6 +267,26 @@ const saveBook = async () => {
   }
   
   isProcessing.value = true
+
+  Swal.fire({ title: 'Upload ke Cloudinary...', text: 'Mohon tunggu, file sedang diupload', icon: 'info', allowOutsideClick: false, showConfirmButton: false, willOpen: () => Swal.showLoading() })
+
+  let fotoUrl = newBook.cover || ''
+  let pdfUrl = DEFAULT_PDF
+
+  try {
+    if (selectedFile.value) {
+      fotoUrl = await uploadToCloudinary(selectedFile.value, 'image')
+    }
+    if (selectedPdfFile.value) {
+      pdfUrl = await uploadToCloudinary(selectedPdfFile.value, 'raw')
+    }
+  } catch (e) {
+    Swal.close()
+    isProcessing.value = false
+    return Swal.fire({ title: 'Gagal Upload!', text: e.message, icon: 'error', confirmButtonColor: '#ef4444' })
+  }
+  
+  Swal.close()
   
   const payload = { 
     title: newBook.title,
@@ -274,10 +295,9 @@ const saveBook = async () => {
     type: newBook.type,
     stock: newBook.type === 'digital' ? 0 : newBook.stock, 
     description: newBook.description,
-    cover: newBook.cover,
-    file: selectedFile.value, 
-    file_pdf: selectedPdfFile.value, 
-    pdfUrl: DEFAULT_PDF, 
+    cover: fotoUrl,
+    foto_buku_url: fotoUrl,
+    pdf_buku_url: newBook.type === 'digital' ? pdfUrl : '',
     rating: 0, 
     reviews: [] 
   }

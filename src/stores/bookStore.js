@@ -82,31 +82,21 @@ export const useBookStore = defineStore('book', () => {
   // POST: Menambah buku ke Database
   const createBook = async (bookData) => {
     try {
-      const token = localStorage.getItem('api_token');
-      const formData = new FormData();
-      formData.append('nama_buku', bookData.title);
-      formData.append('jenis_buku', bookData.category);
-      formData.append('penulis', bookData.author || 'Admin');
-      formData.append('deskripsi', bookData.description || '');
-      formData.append('stok', Number(bookData.stock) || 0);
-      formData.append('harga_buku', Number(bookData.harga) || 0);
-
-      // Handle Cover Gambar
-      if (bookData.file) {
-        formData.append('foto_buku', bookData.file); 
-      } else {
-        formData.append('foto_buku', bookData.cover || '');
-      }
-
-      // 🌟 DISINKRONKAN: Menerima file_pdf dari AdminBooksView
-      if (bookData.type === 'digital' && bookData.file_pdf) {
-        formData.append('pdf_buku', bookData.file_pdf);
+      const body = {
+        nama_buku: bookData.title,
+        jenis_buku: bookData.category,
+        penulis: bookData.author || 'Admin',
+        deskripsi: bookData.description || '',
+        stok: Number(bookData.stock) || 0,
+        harga_buku: Number(bookData.harga) || 0,
+        foto_buku_url: bookData.foto_buku_url || bookData.cover || '',
+        pdf_buku_url: bookData.pdf_buku_url || ''
       }
 
       const res = await fetch(`${API_URL}/buku`, {
         method: 'POST',
-        headers: { ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
-        body: formData
+        headers: getHeaders(),
+        body: JSON.stringify(body)
       })
       
       if (!res.ok) throw new Error('Gagal tambah buku')
@@ -121,39 +111,21 @@ export const useBookStore = defineStore('book', () => {
   // PUT: Update buku di Database
   const editBook = async (id, bookData) => {
     try {
-      const token = localStorage.getItem('api_token');
-      const formData = new FormData();
-
-      console.log("File gambar yang akan dikirim:", bookData.file);
-      console.log("File PDF yang akan dikirim:", bookData.file_pdf);
-      
-      formData.append('nama_buku', bookData.title || '');
-      formData.append('jenis_buku', bookData.category || '');
-      formData.append('penulis', bookData.author || 'Admin');
-      formData.append('deskripsi', bookData.description || '');
-      formData.append('stok', Number(bookData.stock ?? 0));
-      formData.append('harga_buku', Number(bookData.harga || 0));
-
-      // Handle Cover Gambar
-      if (bookData.file) {
-        formData.append('foto_buku', bookData.file); 
-      }
-
-      // 🌟 DISINKRONKAN: Mengirim file PDF baru jika ada, atau mempertahankan URL lama jika tidak diubah
-      if (bookData.type === 'digital') {
-        if (bookData.file_pdf) {
-          formData.append('pdf_buku', bookData.file_pdf); // Mengirim file fisik berkas pdf baru
-        } else if (bookData.pdfUrl) {
-          formData.append('pdf_buku', bookData.pdfUrl); // Mempertahankan path lama agar tidak hilang
-        }
+      const body = {
+        nama_buku: bookData.title || '',
+        jenis_buku: bookData.category || '',
+        penulis: bookData.author || 'Admin',
+        deskripsi: bookData.description || '',
+        stok: Number(bookData.stock ?? 0),
+        harga_buku: Number(bookData.harga || 0),
+        foto_buku_url: bookData.foto_buku_url || '',
+        pdf_buku_url: bookData.pdf_buku_url || ''
       }
 
       const res = await fetch(`${API_URL}/buku/${id}`, {
         method: 'PUT',
-        headers: { 
-          ...(token ? { Authorization: `Bearer ${token}` } : {}) 
-        },
-        body: formData
+        headers: getHeaders(),
+        body: JSON.stringify(body)
       });
 
       if (!res.ok) {
